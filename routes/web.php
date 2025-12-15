@@ -26,3 +26,6 @@ Route::put('/users/{user}',[UserController::class,'update'])
 
 Route::delete('users/{user}',[UserController::class,'destroy'])
 ->name('users.destroy');
+
+
+Route::get('home',[UserController::class,'home']);

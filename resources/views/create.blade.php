@@ -1,3 +1,8 @@
+@extends('layouts.app')
+
+@section('title','create user')
+@section('content')
+
 <form method='POST' action="{{ route('users.store') }}">
 
     @csrf
@@ -23,3 +28,5 @@
 
     <button type="submit">submit</button>
 </form>
+
+@endsection
