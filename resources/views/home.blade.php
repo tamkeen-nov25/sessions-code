@@ -19,6 +19,7 @@
         <x-slot name="view">
             home
         </x-slot>
+        
 
 
         hello 
