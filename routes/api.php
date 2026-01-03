@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\AuthController;
 use App\Http\Middleware\TestMiddleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -19,3 +20,8 @@ Route::post('users/{user}/attach-user-with-posts', [UserController::class, 'atta
 Route::get('users/{user}/posts', [UserController::class, 'getUserPosts']);
 
 Route::post('users/{user}/detach-posts', [UserController::class, 'detachUserWithPosts']);
+
+
+Route::post('register', [AuthController::class, 'register']);
+Route::post('login', [AuthController::class, 'login']);
+Route::delete('logout', [AuthController::class, 'logout'])->middleware('auth:api');
