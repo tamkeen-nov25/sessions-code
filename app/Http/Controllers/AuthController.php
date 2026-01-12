@@ -13,9 +13,11 @@ class AuthController extends Controller
 
     public function register(RegisterRequest $request)
     {
+        
         $response = $this->authService->register($request->validated());
         return $this->successResponse(data: $response);
     }
+
 
     public function login(LoginRequest $request)
     {
@@ -27,6 +29,8 @@ class AuthController extends Controller
     public function logout()
     {
         auth()->user()->tokens()->delete();
-        return $this->successResponse();
+        // return $this->successResponse();
+
+        return successResponse();
     }
 }
