@@ -8,7 +8,7 @@
     @csrf
     <div class="form-group">
         <label for="name">Name</label>
-        <input id="name" type="text" name="name">
+        <input id="name" type="text" name="name[en]">
         @error('name')
          {{ $message }}
         @enderror

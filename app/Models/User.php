@@ -13,7 +13,7 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasApiTokens,TestTrait;
+    use HasFactory, Notifiable, HasApiTokens, TestTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -54,9 +54,14 @@ class User extends Authenticatable
         return $this->hasOne(Profile::class);
     }
 
+    // public function posts()
+    // {
+    //     return $this->belongsToMany(Post::class, 'post_user')
+    //         ->withPivot(['count']);
+    // }
+
     public function posts()
     {
-        return $this->belongsToMany(Post::class, 'post_user')
-            ->withPivot(['count']);
+        return $this->hasMany(Post::class);
     }
 }

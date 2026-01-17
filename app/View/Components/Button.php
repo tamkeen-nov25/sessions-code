@@ -21,10 +21,6 @@ class Button extends Component
      */
     public function render(): View|Closure|string
     {
-        return <<<'blade'
-<div>
-    <!-- Happiness is not something readymade. It comes from your own actions. - Dalai Lama -->
-</div>
-blade;
+        return view('components.button');
     }
 }

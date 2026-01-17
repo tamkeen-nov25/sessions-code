@@ -29,3 +29,8 @@ Route::delete('users/{user}',[UserController::class,'destroy'])
 
 
 Route::get('home',[UserController::class,'home']);
+
+Route::get('locale/{lang}',function($lang){
+    session(['locale'=>$lang]);
+    return redirect()->back();
+})->name('locale');
