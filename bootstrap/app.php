@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\ApiLocalization;
+use App\Http\Middleware\RoleMiddleware;
 use App\Http\Middleware\Test2Middleware;
 use App\Http\Middleware\TestMiddleware;
 use App\Http\Middleware\WebLocalization;
@@ -19,6 +20,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->alias([
+            'role' => RoleMiddleware::class
+        ]);
         $middleware->api([
             ApiLocalization::class
         ]);
@@ -52,16 +56,18 @@ return Application::configure(basePath: dirname(__DIR__))
         })->stop();
         $exceptions->render(function (Throwable $th) {
 
-            if ($th instanceof HttpExceptionInterface) {
-                return successResponse($th->getMessage(), $th->getStatusCode());
-            }
-
-
+            
             if ($th instanceof BadRequestHttpException) {
                 return response()->json([
                     'message' => "bad request"
                 ], 400);
             }
+
+
+            if ($th instanceof HttpExceptionInterface) {
+                return successResponse($th->getMessage(), $th->getStatusCode());
+            }
+
 
             // return response()->json([
             //     'message' => "something went wrong"

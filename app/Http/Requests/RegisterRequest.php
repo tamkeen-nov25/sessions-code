@@ -12,7 +12,7 @@ class RegisterRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Gate::allows('update',$this->route('post'));
+        return true;
     }
 
     /**

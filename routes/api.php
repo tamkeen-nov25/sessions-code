@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\RoleController;
 use App\Http\Middleware\TestMiddleware;
 use App\Models\Comment;
 use App\Models\Country;
@@ -101,7 +102,7 @@ Route::get('test', function () {
 });
 
 
-Route::post('posts',function(Request $request){
+Route::post('posts', function (Request $request) {
     // $request->validate([
     //     'name' =>[ 'required']
     // ]);
@@ -114,21 +115,33 @@ Route::post('posts',function(Request $request){
     ]);
 });
 
-Route::post('posts',function(Request $request){
+Route::get('ali',function(){
+      $user = auth()->user();
+
+        $roles = $user->roles->pluck('name');
+
+        return $roles;
+})->middleware('auth:api');
+
+Route::post('posts', function (Request $request) {
     $request->validate([
         'name' => ['required'],
-        'name.en' => ['required','string'],
-        'name.ar' => ['required','string']
+        'name.en' => ['required', 'string'],
+        'name.ar' => ['required', 'string']
     ]);
     return Product::create([
         'name' => $request->name
     ]);
 
-    
+
     // return Product::create([
     //     'name' => [
     //         'en' => $request->name_en,
     //         'ar' => $request->name_ar
     //     ]
     // ]);
-});
+})->middleware(['auth:api', 'role:manage-poss']);
+
+Route::post('testc', [UserController::class, 'storeComment']);
+
+Route::post('roles', [RoleController::class, 'store']);
