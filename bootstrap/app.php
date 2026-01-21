@@ -21,8 +21,13 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
-            'role' => RoleMiddleware::class
+            'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
+            'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
+            'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
         ]);
+        // $middleware->alias([
+        //     'role' => RoleMiddleware::class
+        // ]);
         $middleware->api([
             ApiLocalization::class
         ]);
@@ -56,7 +61,7 @@ return Application::configure(basePath: dirname(__DIR__))
         })->stop();
         $exceptions->render(function (Throwable $th) {
 
-            
+
             if ($th instanceof BadRequestHttpException) {
                 return response()->json([
                     'message' => "bad request"

@@ -115,12 +115,12 @@ Route::post('posts', function (Request $request) {
     ]);
 });
 
-Route::get('ali',function(){
-      $user = auth()->user();
+Route::get('ali', function () {
+    $user = auth()->user();
 
-        $roles = $user->roles->pluck('name');
+    $roles = $user->roles->pluck('name');
 
-        return $roles;
+    return $roles;
 })->middleware('auth:api');
 
 Route::post('posts', function (Request $request) {
@@ -145,3 +145,4 @@ Route::post('posts', function (Request $request) {
 Route::post('testc', [UserController::class, 'storeComment']);
 
 Route::post('roles', [RoleController::class, 'store']);
+Route::post('employees', [RoleController::class, 'storeEmployee']);

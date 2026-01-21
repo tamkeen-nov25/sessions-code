@@ -25,6 +25,12 @@ class AppServiceProvider extends ServiceProvider
             return $user->age > 20;
         });
 
+        Gate::before(function ($user, $ability) {
+            if ($user->hasRole('Super-Admin')) {
+                return true;
+            }
+        });
+
         // Gate::policy(Post::class, PostPolicy::Class);
     }
 }
