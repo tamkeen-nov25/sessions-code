@@ -86,7 +86,10 @@ class UserController extends Controller
 
     }
 
+
     public function detachUserWithPosts(Request $request,User $user){
         $user->posts()->detach($request->post_ids);
     }
+
+    
 }

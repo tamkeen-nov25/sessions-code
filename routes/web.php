@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\UserController;
+use App\Models\Admin;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -39,15 +40,22 @@ Route::get('locale/{lang}', function ($lang) {
 })->name('locale');
 
 Route::get('login', function () {
-    $user = User::find(4);
+    auth('admin')->attempt([
+        'email' => "admin1@gmail.com",
+        'password' => 12345
+    ]);
 
-    Auth::login($user);
-});
+    $admin = auth('admin')->user();
+
+    auth('admin')->login($admin);
 
 
-Route::put('articles/{article}',[])->middleware('permission:edit articles');
-Route::delete('articles/{article}',[])->middleware('permission:delete articles');
-Route::post('articles/{article}/publish',[])->middleware('permission:publish articles');
-Route::post('articles/{article}/un-publish',[])->middleware('permission:unpublish articles');
-Route::get('articles',[])->middleware('permission:view articles');
-Route::get('articles/{article}',[])->middleware('permission:view articles');
+
+
+})->middleware('auth:admin');
+
+
+Route::put('articles/{article}', [])->middleware('permission:edit articles');
+Route::delete('articles/{article}', [])->middleware('permission:delete articles');
+Route::post('articles/{article}/publish', [])->middleware('permission:publish articles');
+Route::post('articles/{article}/un-publish', [])->middleware('permission:unpublish articles');
