@@ -174,6 +174,7 @@ Route::post('avatar', function (Request $request) {
     $file = $request->file('avatar');
     $path = "images/" . $file->getClientOriginalName();
 
+    
     $user = User::create([
         'name' => "test",
         "email" => "asdf@da",
