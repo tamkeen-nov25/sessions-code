@@ -17,6 +17,8 @@ class UserResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'phone' => $this->phone,
+            "active" => $this->active,
             // 'avatar' => asset('storage/' . $this->avatar),
             'avatar' => route('api.private',$this->id),
             'profile' => ProfileResource::make($this->whenLoaded('profile'))

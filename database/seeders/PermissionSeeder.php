@@ -14,13 +14,19 @@ class PermissionSeeder extends Seeder
      */
     public function run(): void
     {
-        Permission::create(['name' => 'edit articles']);
+        Permission::create([
+            'name' => 'edit articles',
+            'guard_name' => 'web'
+        ]);
         Permission::create(['name' => 'delete articles']);
         Permission::create(['name' => 'publish articles']);
         Permission::create(['name' => 'unpublish articles']);
 
         // create roles and assign existing permissions
-        $role1 = Role::create(['name' => 'writer']);
+        $role1 = Role::create([
+            'name' => 'writer',
+            'guard_name' => 'web'
+        ]);
         $role1->givePermissionTo('edit articles');
         $role1->givePermissionTo('delete articles');
 

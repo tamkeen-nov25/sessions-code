@@ -174,7 +174,7 @@ Route::post('avatar', function (Request $request) {
     $file = $request->file('avatar');
     $path = "images/" . $file->getClientOriginalName();
 
-    
+
     $user = User::create([
         'name' => "test",
         "email" => "asdf@da",
@@ -195,3 +195,13 @@ Route::post('avatar', function (Request $request) {
 Route::get('private/{user}', function (User $user) {
     return Storage::download($user->avatar);
 })->name('api.private');
+
+
+Route::get('a/users', function (Request $request) {
+    $users = User::where(function ($query) use ($request) {
+        $query->where('phone', 'LIKE', "%" . $request->phone . "%")
+            ->orWhere('name', "LIKE", '%' . $request->name . "%");
+    })
+        ->where("active", $request->active)->get();
+    return UserResource::collection($users);
+});
