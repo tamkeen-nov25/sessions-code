@@ -59,3 +59,9 @@ Route::put('articles/{article}', [])->middleware('permission:edit articles');
 Route::delete('articles/{article}', [])->middleware('permission:delete articles');
 Route::post('articles/{article}/publish', [])->middleware('permission:publish articles');
 Route::post('articles/{article}/un-publish', [])->middleware('permission:unpublish articles');
+
+
+Route::get('test',function(){
+    $user = User::find(23);
+    return view('test',compact('user'));
+});

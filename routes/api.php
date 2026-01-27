@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RoleController;
 use App\Http\Middleware\TestMiddleware;
+use App\Http\Resources\UserResource;
 use App\Models\Comment;
 use App\Models\Country;
 use App\Models\Post;
@@ -13,6 +14,7 @@ use App\Models\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -146,3 +148,49 @@ Route::post('testc', [UserController::class, 'storeComment']);
 
 Route::post('roles', [RoleController::class, 'store']);
 Route::post('employees', [RoleController::class, 'storeEmployee']);
+
+
+Route::get('test/resource', function () {
+    //    $user =  User::create([
+    //         'name' =>"test",
+    //         "email" => "asdf@da",
+    //         "password" => "asdfas",
+    //         "phone" => "asdfas"
+    //     ]);
+    // $user->profile()->create([
+    //     'address' => "adsfa"
+    // ]);
+
+    $users =  User::get();
+    // $user =  User::find(1);
+    return response()->json([
+        'message' => "user created succes",
+        'data' => UserResource::make($users)
+    ]);
+});
+
+
+Route::post('avatar', function (Request $request) {
+    $file = $request->file('avatar');
+    $path = "images/" . $file->getClientOriginalName();
+
+    $user = User::create([
+        'name' => "test",
+        "email" => "asdf@da",
+        "password" => "asdfas",
+        "phone" => "asdfas",
+        'avatar' => $path
+    ]);
+
+    Storage::disk('local')
+        ->put(
+            $path,
+            file_get_contents($file)
+        );
+
+    return UserResource::make($user);
+});
+
+Route::get('private/{user}', function (User $user) {
+    return Storage::download($user->avatar);
+})->name('api.private');
