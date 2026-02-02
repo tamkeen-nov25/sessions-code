@@ -1,10 +1,14 @@
 <?php
 
+use App\Events\UserRegistered;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RoleController;
 use App\Http\Middleware\TestMiddleware;
 use App\Http\Resources\UserResource;
+use App\Jobs\Test;
+use App\Mail\WelcomeMailMarkdown;
+use App\Models\Admin;
 use App\Models\Comment;
 use App\Models\Country;
 use App\Models\Post;
@@ -13,6 +17,7 @@ use App\Models\User;
 use App\Models\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
@@ -204,4 +209,48 @@ Route::get('a/users', function (Request $request) {
     })
         ->where("active", $request->active)->get();
     return UserResource::collection($users);
+});
+
+
+Route::get('event', function () {
+    // User::create();
+    // throw new Exception("sdfas");
+    // Log::info("afsdf");
+    // Admin::query()->update([
+    //     'email' => "alsisssssar"
+    // ]);
+     Post::create([
+        'name'=>"dss",
+        "is_active" => 1,
+    "user_id" =>3
+    ]);
+    $post= Post::find(1);
+    $post->name = "Asdfas";
+    $post->save();
+    // return User::where('id',3)->update([
+    //     'name'=>"tesxxkmmmmkkjjjmmmlllmmxxxxxxxxxxxxxtuioo"
+    // ]);
+    // return User::create([
+    //     'name'=>"ASDf",
+    //     'phone'=>"ASDf",
+    //     'password'=>"ASDf",
+    //     'active' =>1
+    // ]);
+    // UserRegistered::dispatch();
+});
+
+
+Route::get('job',function(){
+    Test::dispatch()->onQueue('high');
+    Test::dispatch()->onQueue('default');
+    Test::dispatch()->onQueue('low');
+});
+
+Route::get('mail',function(){
+    Mail::to("alissarkousa@gmail.com")->send(new WelcomeMailMarkdown("hi"));
+    // return new WelcomeMailMarkdown();
+})->name('mail');
+
+Route::get('soft',function(){
+   return User::query()->onlyTrashed()->restore();
 });

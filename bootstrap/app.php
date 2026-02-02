@@ -53,29 +53,29 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        $exceptions->report(function (Throwable $exception) {
+        // $exceptions->report(function (Throwable $exception) {
 
-            if ($exception instanceof Exception) {
-                Log::info($exception->getMessage());
-            }
-        })->stop();
-        $exceptions->render(function (Throwable $th) {
-
-
-            if ($th instanceof BadRequestHttpException) {
-                return response()->json([
-                    'message' => "bad request"
-                ], 400);
-            }
+        //     if ($exception instanceof Exception) {
+        //         Log::info($exception->getMessage());
+        //     }
+        // })->stop();
+        // $exceptions->render(function (Throwable $th,Request $request) {
 
 
-            if ($th instanceof HttpExceptionInterface) {
-                return successResponse($th->getMessage(), $th->getStatusCode());
-            }
+        //     if ($th instanceof BadRequestHttpException) {
+        //         return response()->json([
+        //             'message' => "bad request"
+        //         ], 400);
+        //     }
 
 
-            // return response()->json([
-            //     'message' => "something went wrong"
-            // ], 500);
-        });
+        //     if ($th instanceof HttpExceptionInterface) {
+        //         return successResponse($th->getMessage(), $th->getStatusCode());
+        //     }
+
+
+        //     // return response()->json([
+        //     //     'message' => "something went wrong"
+        //     // ], 500);
+        // });
     })->create();
