@@ -15,8 +15,10 @@ use App\Models\Post;
 use App\Models\Product;
 use App\Models\User;
 use App\Models\Video;
+use App\Notifications\InvoiceCreated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
@@ -219,12 +221,12 @@ Route::get('event', function () {
     // Admin::query()->update([
     //     'email' => "alsisssssar"
     // ]);
-     Post::create([
-        'name'=>"dss",
+    Post::create([
+        'name' => "dss",
         "is_active" => 1,
-    "user_id" =>3
+        "user_id" => 3
     ]);
-    $post= Post::find(1);
+    $post = Post::find(1);
     $post->name = "Asdfas";
     $post->save();
     // return User::where('id',3)->update([
@@ -240,17 +242,44 @@ Route::get('event', function () {
 });
 
 
-Route::get('job',function(){
+Route::get('job', function () {
     Test::dispatch()->onQueue('high');
     Test::dispatch()->onQueue('default');
     Test::dispatch()->onQueue('low');
 });
 
-Route::get('mail',function(){
+Route::get('mail', function () {
     Mail::to("alissarkousa@gmail.com")->send(new WelcomeMailMarkdown("hi"));
     // return new WelcomeMailMarkdown();
 })->name('mail');
 
-Route::get('soft',function(){
-   return User::query()->onlyTrashed()->restore();
+Route::get('soft', function () {
+    return User::query()->onlyTrashed()->restore();
+});
+
+Route::get('send', function () {
+    $instanceId = 'instance160821';
+    $token = 'de1scxp1knylce6f';
+    $response =
+        Http::post("https://api.ultramsg.com/{$instanceId}/messages/chat", [
+            'token' => $token,
+            'to' => '+963939614142', // International format
+            'body' => 'Hello from Laravel via UltraMsg!'
+        ]);
+    return $response->json();
+});
+
+
+Route::get('t/users',function(){
+    Test::dispatch($file);
+    return User::active("Sad")->all();
+});
+
+Route::get('notificaiton',function(){
+    $user = User::find(5);
+    $user->notify(new InvoiceCreated());
+
+    // $user->profile;
+
+    return $user->unreadNotifications->markAsRead();
 });

@@ -14,9 +14,10 @@ class Test implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct()
+    public $file;
+    public function __construct($file)
     {
-        //
+        // $this-.file
     }
 
     /**

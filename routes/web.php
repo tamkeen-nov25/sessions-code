@@ -3,7 +3,9 @@
 use App\Http\Controllers\UserController;
 use App\Models\Admin;
 use App\Models\User;
+use App\Notifications\InvoiceCreated;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -48,10 +50,6 @@ Route::get('login', function () {
     $admin = auth('admin')->user();
 
     auth('admin')->login($admin);
-
-
-
-
 })->middleware('auth:admin');
 
 
@@ -61,7 +59,20 @@ Route::post('articles/{article}/publish', [])->middleware('permission:publish ar
 Route::post('articles/{article}/un-publish', [])->middleware('permission:unpublish articles');
 
 
-Route::get('test',function(){
+Route::get('test', function () {
     $user = User::find(23);
-    return view('test',compact('user'));
+    return view('test', compact('user'));
 });
+
+Route::get('send-whatsapp', function () {
+    $instanceId = 'instance160821';
+    $token = 'de1scxp1knylce6f';
+    $response =
+        Http::get("https://api.ultramsg.com/instance160821/messages/chat?token=de1scxp1knylce6f&to=+963939614142&body=Hello");
+
+
+        dd($response);
+    return $response->json();
+});
+
+
