@@ -5,6 +5,7 @@ return [
     "hello" => "مرحباً :name",
     "apples" => "{0} لا يوجد تفاحات|{1} يوجد تفاحة واحدة|[2,*] :count تفاحات",
 
+    "ordercreated" => "تم انشاء الطلب بنجاح",
     "attributes" => [
         'alissar' => "اليسار"
     ]

@@ -48,6 +48,7 @@ class InvoiceCreated extends Notification
     public function toArray(object $notifiable): array
     {
         return [
+            'title' => 'messages.ordercreated',
             'order_id' => 5
         ];
     }
