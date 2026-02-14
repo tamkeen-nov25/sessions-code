@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FcmController;
 use App\Http\Controllers\UserController;
 use App\Models\Admin;
 use App\Models\User;
@@ -34,7 +35,7 @@ Route::delete('users/{user}', [UserController::class, 'destroy'])
 
 
 Route::get('home', [UserController::class, 'home'])
-    ->middleware(['auth', 'permission:publish articles']);
+    ->middleware(['auth']);
 
 Route::get('locale/{lang}', function ($lang) {
     session(['locale' => $lang]);
@@ -51,6 +52,11 @@ Route::get('login', function () {
 
     auth('admin')->login($admin);
 })->middleware('auth:admin');
+
+Route::get('login/a', function () {
+    $user = User::find(5);
+Auth::login($user);
+});
 
 
 Route::put('articles/{article}', [])->middleware('permission:edit articles');
@@ -71,8 +77,9 @@ Route::get('send-whatsapp', function () {
         Http::get("https://api.ultramsg.com/instance160821/messages/chat?token=de1scxp1knylce6f&to=+963939614142&body=Hello");
 
 
-        dd($response);
+    dd($response);
     return $response->json();
 });
 
 
+Route::post('/fcm/register-token', [FcmController::class, 'storeToken'])->middleware('auth');

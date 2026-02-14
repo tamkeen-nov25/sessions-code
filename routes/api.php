@@ -3,6 +3,7 @@
 use App\Events\UserRegistered;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FcmController;
 use App\Http\Controllers\RoleController;
 use App\Http\Middleware\TestMiddleware;
 use App\Http\Resources\UserResource;
@@ -270,12 +271,12 @@ Route::get('send', function () {
 });
 
 
-Route::get('t/users',function(){
+Route::get('t/users', function () {
     Test::dispatch($file);
     return User::active("Sad")->all();
 });
 
-Route::get('notificaiton',function(){
+Route::get('notificaiton', function () {
     $user = User::find(5);
     $user->notify(new InvoiceCreated());
 
@@ -283,3 +284,5 @@ Route::get('notificaiton',function(){
 
     return $user->unreadNotifications->markAsRead();
 });
+
+Route::get('send', [FcmController::class, 'send']);

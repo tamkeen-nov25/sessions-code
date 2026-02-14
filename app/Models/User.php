@@ -65,9 +65,9 @@ class User extends Authenticatable
         return $this->hasOne(Profile::class);
     }
     #[Scope]
-    protected function active($query,$name)
+    protected function active($query, $name)
     {
-        $query->where('name',$name);
+        $query->where('name', $name);
     }
 
     // public function posts()
@@ -79,5 +79,10 @@ class User extends Authenticatable
     public function posts()
     {
         return $this->hasMany(Post::class);
+    }
+
+    public function deviceTokens()
+    {
+        return $this->hasMany(DeviceToken::class);
     }
 }
