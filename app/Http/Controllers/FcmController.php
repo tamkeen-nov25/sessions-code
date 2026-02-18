@@ -27,7 +27,6 @@ class FcmController extends Controller
         ]);
 
 
-
         if (auth()->check()) {
             DeviceToken::query()->updateOrCreate([
                 'token' => $request->token,

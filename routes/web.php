@@ -1,10 +1,12 @@
 <?php
 
+use App\Events\MessageSent;
 use App\Http\Controllers\FcmController;
 use App\Http\Controllers\UserController;
 use App\Models\Admin;
 use App\Models\User;
 use App\Notifications\InvoiceCreated;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
@@ -55,7 +57,7 @@ Route::get('login', function () {
 
 Route::get('login/a', function () {
     $user = User::find(5);
-Auth::login($user);
+    Auth::login($user);
 });
 
 
@@ -83,3 +85,14 @@ Route::get('send-whatsapp', function () {
 
 
 Route::post('/fcm/register-token', [FcmController::class, 'storeToken'])->middleware('auth');
+
+
+Route::post('send-message', function (Request $request) {
+    $message = $request->message;
+
+    event(new MessageSent($message));
+});
+
+Route::get('chat', function () {
+    return view('chat');
+});
