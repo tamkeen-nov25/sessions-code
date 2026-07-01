@@ -28,6 +28,7 @@
 
 
     @include('partials.footer')
+    @include('partials.firebase')
 
 
 </body>

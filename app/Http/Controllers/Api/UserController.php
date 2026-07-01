@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Profile;
 use App\Models\User;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    public function __construct(protected UserService $userService) {}
     // public function store(Request $request)
     // {
     //     $user =  User::create([
@@ -25,15 +27,10 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        $user =  User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => $request->password,
-        ]);
+        $this->userService->store($request->validated());
+        // (new UserService)->store();
 
-        $user->profile()->create([
-            'address' => $request->address,
-        ]);
+
 
         return response()->json([
             'message' => "success",
@@ -43,7 +40,7 @@ class UserController extends Controller
 
     public function index()
     {
-        $users =  User::with('profile')->get();
+        $users = $this->userService->index();
 
         return response()->json([
             'message' => "success",
@@ -53,9 +50,12 @@ class UserController extends Controller
 
     public function show(User $user)
     {
+        // $user = new User();
+        $user = $this->userService->show($user);
+
         return response()->json([
             'message' => "success",
-            'data' => $user->load('profile')
+            'data' => $user
         ]);
         // return ;
     }
@@ -76,20 +76,20 @@ class UserController extends Controller
 
     // }
 
-    public function attachUserWithPosts(Request $request,User $user){
+    public function attachUserWithPosts(Request $request, User $user)
+    {
 
         $user->posts()->sync($request->post_ids);
     }
 
-    public function getUserPosts(Course $course){
+    public function getUserPosts(Course $course)
+    {
         return $course->load('students');
-
     }
 
 
-    public function detachUserWithPosts(Request $request,User $user){
+    public function detachUserWithPosts(Request $request, User $user)
+    {
         $user->posts()->detach($request->post_ids);
     }
-
-    
 }

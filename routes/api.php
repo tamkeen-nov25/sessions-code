@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FcmController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\StripeController;
 use App\Http\Middleware\TestMiddleware;
 use App\Http\Resources\UserResource;
 use App\Jobs\Test;
@@ -261,6 +262,7 @@ Route::get('soft', function () {
 Route::get('send', function () {
     $instanceId = 'instance160821';
     $token = 'de1scxp1knylce6f';
+    $otp = rand(111111, 999999);
     $response =
         Http::post("https://api.ultramsg.com/{$instanceId}/messages/chat", [
             'token' => $token,
@@ -286,3 +288,6 @@ Route::get('notificaiton', function () {
 });
 
 Route::get('send', [FcmController::class, 'send']);
+
+
+Route::post('/stripe/webhook', [StripeController::class, 'handle']);

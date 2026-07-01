@@ -2,6 +2,7 @@
 
 use App\Events\MessageSent;
 use App\Http\Controllers\FcmController;
+use App\Http\Controllers\StripeController;
 use App\Http\Controllers\UserController;
 use App\Models\Admin;
 use App\Models\User;
@@ -13,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name("welcome");
 
 Route::get('/users', [UserController::class, 'index'])
     ->name('users.index');
@@ -95,4 +96,12 @@ Route::post('send-message', function (Request $request) {
 
 Route::get('chat', function () {
     return view('chat');
+});
+
+
+Route::post("pay", [StripeController::class, 'checkout'])->name('wallet.pay')->middleware('auth');
+
+
+Route::get('payment', function () {
+    return view('payment');
 });

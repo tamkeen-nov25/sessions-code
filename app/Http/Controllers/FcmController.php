@@ -38,6 +38,7 @@ class FcmController extends Controller
         return response()->json(['status' => 'stored']);
     }
 
+
     public function send()
     {
 
