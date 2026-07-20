@@ -4,6 +4,7 @@ use App\Events\MessageSent;
 use App\Http\Controllers\FcmController;
 use App\Http\Controllers\StripeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserWebController;
 use App\Models\Admin;
 use App\Models\User;
 use App\Notifications\InvoiceCreated;
@@ -38,7 +39,7 @@ Route::delete('users/{user}', [UserController::class, 'destroy'])
 
 
 Route::get('home', [UserController::class, 'home'])
-    ->middleware(['auth']);
+    ->middleware(['auth'])->name('home');
 
 Route::get('locale/{lang}', function ($lang) {
     session(['locale' => $lang]);
@@ -64,13 +65,23 @@ Route::get('login/a', function () {
 
 Route::put('articles/{article}', [])->middleware('permission:edit articles');
 Route::delete('articles/{article}', [])->middleware('permission:delete articles');
-Route::post('articles/{article}/publish', [])->middleware('permission:publish articles');
+Route::post('articles/{article}/publish', []);
 Route::post('articles/{article}/un-publish', [])->middleware('permission:unpublish articles');
 
 
 Route::get('test', function () {
     $user = User::find(23);
     return view('test', compact('user'));
+});
+
+Route::group(['middleware' => 'auth'], function () {
+    Route::post('articles/{article}/publish', []);
+    Route::post('articles/{article}/un-publish', []);
+
+    Route::get('test', function () {
+        $user = User::find(23);
+        return view('test', compact('user'));
+    });
 });
 
 Route::get('send-whatsapp', function () {
@@ -87,6 +98,10 @@ Route::get('send-whatsapp', function () {
 
 Route::post('/fcm/register-token', [FcmController::class, 'storeToken'])->middleware('auth');
 
+
+Route::post('register', [UserWebController::class, 'register'])->name('register');
+Route::get('register', [UserWebController::class, 'registerView'])->name('register.view');
+Route::get('logout', [UserWebController::class, 'logout'])->name('logout');
 
 Route::post('send-message', function (Request $request) {
     $message = $request->message;

@@ -14,20 +14,25 @@ class TestMiddleware
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next,string $role): Response
+    public function handle(Request $request, Closure $next): Response
     {
-        if ($role == "alissar") {
-            return $next($request);
-        } else {
-            return response()->json([
-                'message' => "error",
-                "data" => []
-            ]);
-        }
+        return response()->json([
+            'message' => "error",
+            "data" => []
+        ]);
+        // if ($role == "alissar") {
+        //     return $next($request);
+        // } else {
+        //     return response()->json([
+        //         'message' => "error",
+        //         "data" => []
+        //     ]);
+        // }
     }
 
-    public function terminate(Request $request, Response $response){
-        Log::info("from teminate",[
+    public function terminate(Request $request, Response $response)
+    {
+        Log::info("from teminate", [
             'request_url' => $request->getBaseUrl()
         ]);
     }

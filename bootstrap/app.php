@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\AgeMiddleware;
 use App\Http\Middleware\ApiLocalization;
 use App\Http\Middleware\RoleMiddleware;
 use App\Http\Middleware\Test2Middleware;
@@ -14,7 +15,7 @@ use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
-        channels: __DIR__.'/../routes/channels.php',
+        channels: __DIR__ . '/../routes/channels.php',
         web: __DIR__ . '/../routes/web.php',
         api: __DIR__ . '/../routes/api.php',
         commands: __DIR__ . '/../routes/console.php',
@@ -25,33 +26,35 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
             'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
             'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
+
         ]);
         // $middleware->alias([
         //     'role' => RoleMiddleware::class
         // ]);
-        $middleware->api([
-            ApiLocalization::class
-        ]);
+        // $middleware->api([
+        //     ApiLocalization::class
+        // ]);
 
-        $middleware->web([
-            WebLocalization::class
-        ]);
+        // $middleware->web([
+        //     WebLocalization::class
+        // ]);
         // $middleware->append([
-        //     TestMiddleware::class
+        //     AgeMiddleware::class
         // ]);
 
         // $middleware->alias([
         //     'test' => TestMiddleware::class
         // ]);
+        // $middleware->append([]);
 
-        $middleware->group('alissar', [
-            TestMiddleware::class,
-        ]);
+        // $middleware->group('alissar', [
+        //     TestMiddleware::class,
+        // ]);
 
-        $middleware->web(append: [
-            Test2Middleware::class
+        // $middleware->web([
+        //     Test2Middleware::class
 
-        ]);
+        // ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         // $exceptions->report(function (Throwable $exception) {
@@ -80,3 +83,6 @@ return Application::configure(basePath: dirname(__DIR__))
         //     // ], 500);
         // });
     })->create();
+
+
+

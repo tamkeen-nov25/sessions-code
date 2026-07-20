@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FcmController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StripeController;
+use App\Http\Middleware\AgeMiddleware;
 use App\Http\Middleware\TestMiddleware;
 use App\Http\Resources\UserResource;
 use App\Jobs\Test;
@@ -31,7 +32,7 @@ Route::get('/user', function (Request $request) {
 
 
 Route::post('users', [UserController::class, 'store']);
-Route::get('users', [UserController::class, 'index'])->middleware(TestMiddleware::class . ':alissar');
+Route::get('users', [UserController::class, 'index'])->withoutMiddleware([AgeMiddleware::class]);
 Route::get('users/{user}', [UserController::class, 'show']);
 
 Route::post('users/{user}/attach-user-with-posts', [UserController::class, 'attachUserWithPosts']);
@@ -43,7 +44,7 @@ Route::post('users/{user}/detach-posts', [UserController::class, 'detachUserWith
 
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
-Route::delete('logout', [AuthController::class, 'logout'])->middleware('auth:api');
+Route::delete('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
 Route::put('posts/{post}', function () {
 
@@ -62,6 +63,10 @@ Route::put('posts/{post}', function () {
     // $user->uploadImage("adfas");
 })->middleware(['auth:api', 'can:update,post']);
 
+Route::get('profile',function(){
+   return  auth()->user();
+
+})->middleware('auth:sanctum');
 
 Route::get('test', function () {
 
