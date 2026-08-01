@@ -4,6 +4,7 @@ use App\Events\UserRegistered;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FcmController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StripeController;
 use App\Http\Middleware\AgeMiddleware;
@@ -63,9 +64,8 @@ Route::put('posts/{post}', function () {
     // $user->uploadImage("adfas");
 })->middleware(['auth:api', 'can:update,post']);
 
-Route::get('profile',function(){
-   return  auth()->user();
-
+Route::get('profile', function () {
+    return  auth()->user();
 })->middleware('auth:sanctum');
 
 Route::get('test', function () {
@@ -296,3 +296,23 @@ Route::get('send', [FcmController::class, 'send']);
 
 
 Route::post('/stripe/webhook', [StripeController::class, 'handle']);
+Route::get('trait', function () {
+    return User::find(1)->log("test");
+});
+
+Route::post('products', function (Request $request) {
+    Product::create([
+        'name' => $request->name,
+        'price' => $request->price,
+        'user_id' => 1
+    ]);
+});
+
+Route::get('products/{product}', function (Product $product) {
+    // auth()->user();
+    Gate::authorize('view', $product);
+    return $product;
+})->middleware('auth:sanctum');
+
+
+Route::post('products/{product}',[ProductController::class,'update'])->middleware('auth:sanctum');

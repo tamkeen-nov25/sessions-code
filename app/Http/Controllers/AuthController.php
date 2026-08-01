@@ -13,24 +13,40 @@ class AuthController extends Controller
 {
     public function __construct(protected AuthService $authService) {}
 
+    // public function register(Request $request)
+    // {
+    //     // request name 
+    //     $user =  User::query()->create([
+    //         'name' => $request->name,
+    //         'email' => $request->email,
+    //         'password' => $request->password
+    //     ]);
+
+    //     $token = $user->createToken('api-token')->plainTextToken;
+
+    //     return response()->json([
+    //         'user' => $user,
+    //         'token' => $token
+    //     ]);
+
+    //     $response = $this->authService->register($request->validated());
+    //     return $this->successResponse(data: $response);
+    // }
+
     public function register(Request $request)
     {
-        // request name 
-        $user =  User::query()->create([
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => $request->password
+            'password' => $request->password,
         ]);
 
-        $token = $user->createToken('api-token')->plainTextToken;
-
-        return response()->json([
+        // $token = $user->createToken('test')->accessToken;
+        $token =  auth('api')->login($user);
+        return [
             'user' => $user,
             'token' => $token
-        ]);
-
-        $response = $this->authService->register($request->validated());
-        return $this->successResponse(data: $response);
+        ];
     }
 
 

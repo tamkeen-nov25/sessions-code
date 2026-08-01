@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\LogTrait;
 use App\Models\Scopes\ActiveScope;
 use App\Observers\UserObserver;
 use App\TestTrait;
@@ -16,14 +17,28 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
 #[ObservedBy([UserObserver::class])]
 
-class User extends Authenticatable
+   
+class User extends Authenticatable  implements JWTSubject
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, HasApiTokens, TestTrait, HasRoles;
     use SoftDeletes;
+    use LogTrait;
+
+     public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
+    
     /**
      * The attributes that are mass assignable.
      *
