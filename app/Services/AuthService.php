@@ -24,12 +24,11 @@ class AuthService
         ];
     }
 
-    public function login(array $data)
-    {
-        $user = User::query()->where('email', $data['email'])->first();
+    public function login(array $data){
+        $user = User::query()->where('email',$data['email'])->first();
 
-        if ($user && Hash::check($data['password'], $user->password)) {
-
+        if($user && Hash::check($data['password'], $user->password)){
+           
             $token =  $user->createToken('auth-token')->plainTextToken;
             return [
                 'user' => $user,
@@ -38,16 +37,8 @@ class AuthService
         }
 
         throw new AuthenticationException();
-    }
 
-    public function login($guard, array $credintials)
-    {
-        $user->createtoken();
     }
-
-    public function adminlogin()
-    {
-        $user =   Auth::guard('admin')->attempt($credintials);
-        $this->login();
-    }
+    
 }
+
