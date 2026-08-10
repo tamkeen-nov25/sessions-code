@@ -21,11 +21,13 @@ use App\Models\User;
 use App\Models\Video;
 use App\Notifications\InvoiceCreated;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
+use Spatie\Permission\Models\Role;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -315,4 +317,48 @@ Route::get('products/{product}', function (Product $product) {
 })->middleware('auth:sanctum');
 
 
-Route::post('products/{product}',[ProductController::class,'update'])->middleware('auth:sanctum');
+Route::post('products/{product}', [ProductController::class, 'update'])->middleware('auth:sanctum');
+
+
+
+Route::post('posts', function (Request $request) {
+    // $request->validate([
+    //     'name' => ['required'],
+    //     'name.en' => ['required', 'string'],
+    //     'name.ar' => ['required', 'string']
+    // ]);
+
+    // return $request;
+    $video = Video::create();
+    $video->comments()->create();
+
+    $post = Post::find(1);
+
+
+    return Comment::find(1)->load('commentable');
+});
+
+
+Route::post('users', function () {
+    //    $user = User::create([
+    //         'name'=>"test",
+    //         'email' => "test@test.com",
+    //         "password" => 1235
+    //     ]);
+
+    //     $role = Role::create([
+    //         'name' => "alissar"
+    //     ]);
+
+    //     $role->givePermissionTo('edit articles');
+
+    //     $user->assignRole($role);
+
+    return User::find(4)->roles
+        ->load("permissions");
+});
+
+
+Route::get('register',function(){
+   Auth::attempt();
+});

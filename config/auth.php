@@ -49,6 +49,14 @@ return [
         'api' => [
             'driver' => 'jwt',
             'provider' => 'users',
+        ],
+        'employee' => [
+            'driver' => 'session',
+            'provider' => 'employees',
+        ],
+        'customer' => [
+            'driver' => 'session',
+            'provider' => 'customers',
         ]
     ],
 
@@ -84,6 +92,12 @@ return [
         //     'driver' => 'database',
         //     'table' => 'users',
         // ],
+        ,
+        'employees' => [
+            'driver' => 'eloquent',
+            'model' => Employee::class,
+        ]
+
     ],
 
     /*
