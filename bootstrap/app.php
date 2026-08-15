@@ -31,9 +31,9 @@ return Application::configure(basePath: dirname(__DIR__))
         // $middleware->alias([
         //     'role' => RoleMiddleware::class
         // ]);
-        // $middleware->api([
-        //     ApiLocalization::class
-        // ]);
+        $middleware->api([
+            ApiLocalization::class
+        ]);
 
         // $middleware->web([
         //     WebLocalization::class

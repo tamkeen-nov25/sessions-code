@@ -9,6 +9,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StripeController;
 use App\Http\Middleware\AgeMiddleware;
 use App\Http\Middleware\TestMiddleware;
+use App\Http\Resources\ProductResource;
 use App\Http\Resources\UserResource;
 use App\Jobs\Test;
 use App\Mail\WelcomeMailMarkdown;
@@ -302,12 +303,13 @@ Route::get('trait', function () {
     return User::find(1)->log("test");
 });
 
-Route::post('products', function (Request $request) {
-    Product::create([
-        'name' => $request->name,
-        'price' => $request->price,
-        'user_id' => 1
-    ]);
+Route::get('products', function (Request $request) {
+    return ProductResource::collection(Product::all());
+    // Product::create([
+    //     'name' => $request->name,
+    //     'price' => $request->price,
+    //     'user_id' => 1
+    // ]);
 });
 
 Route::get('products/{product}', function (Product $product) {
@@ -339,7 +341,13 @@ Route::post('posts', function (Request $request) {
 });
 
 
-Route::post('users', function () {
+Route::get('users', function () {
+    // User::find(4)->profile()->create([
+    //     'address' => "sdfsf"
+    // ]);
+    // return User::w();
+    $users = User::query()->with('profile')->get();
+    return UserResource::collection($users);
     //    $user = User::create([
     //         'name'=>"test",
     //         'email' => "test@test.com",
@@ -347,7 +355,7 @@ Route::post('users', function () {
     //     ]);
 
     //     $role = Role::create([
-    //         'name' => "alissar"
+    //          'name' => "alissar"
     //     ]);
 
     //     $role->givePermissionTo('edit articles');
@@ -359,6 +367,16 @@ Route::post('users', function () {
 });
 
 
-Route::get('register',function(){
-   Auth::attempt();
+Route::get('register', function () {
+    Auth::attempt();
+});
+
+
+Route::post("products", function (Request $request) {
+    Product::create([
+        'name' => $request->name,
+        'price' => $request->price,
+        'user_id' => 1
+    ]);
+    return ProductResource::collection(Product::all());
 });

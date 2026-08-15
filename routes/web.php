@@ -6,6 +6,7 @@ use App\Http\Controllers\StripeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserWebController;
 use App\Models\Admin;
+use App\Models\Product;
 use App\Models\User;
 use App\Notifications\InvoiceCreated;
 use Illuminate\Http\Request;
@@ -119,4 +120,8 @@ Route::post("pay", [StripeController::class, 'checkout'])->name('wallet.pay')->m
 
 Route::get('payment', function () {
     return view('payment');
+});
+Route::get('products', function () {
+    $products = Product::all();
+    return view('products.index', compact('products'));
 });

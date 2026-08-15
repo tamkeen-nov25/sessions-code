@@ -4,6 +4,14 @@
             {{ config('app.name', 'Laravel App') }}
         </a>
 
+        <a href="{{ route('locale', 'en') }}">
+            EN
+        </a>
+        <a href="{{ route('locale', 'ar') }}">
+            AR
+        </a>
+
+
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>

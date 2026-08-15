@@ -18,10 +18,12 @@ class UserResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'phone' => $this->phone,
-            "active" => $this->active,
+            'profile' =>ProfileResource::make($this->whenLoaded('profile'))
+            // "active" => $this->active,
             // 'avatar' => asset('storage/' . $this->avatar),
-            'avatar' => route('api.private',$this->id),
-            'profile' => ProfileResource::make($this->whenLoaded('profile'))
+            // 'avatar' => route('api.private',$this->id),
+            // 'profile' => ProfileResource::make($this->whenLoaded('profile'))
         ];
     }
 }
+ 
