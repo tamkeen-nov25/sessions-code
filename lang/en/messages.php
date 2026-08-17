@@ -9,6 +9,7 @@ return [
 
     "attributes" => [
         'alissar' => "alissar"
-    ]
+    ],
+    "Home" => "Home",
 
 ];

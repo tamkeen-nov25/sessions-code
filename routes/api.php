@@ -312,6 +312,7 @@ Route::get('products', function (Request $request) {
     // ]);
 });
 
+
 Route::get('products/{product}', function (Product $product) {
     // auth()->user();
     Gate::authorize('view', $product);

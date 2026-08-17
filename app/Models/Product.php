@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 #[UseFactory(ProductFactory::class)]
 #[UsePolicy(ProductPolicy::class)]
+
 class Product extends Model
 {
     use HasTranslations,HasFactory;

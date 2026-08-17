@@ -8,6 +8,7 @@ return [
     "ordercreated" => "تم انشاء الطلب بنجاح",
     "attributes" => [
         'alissar' => "اليسار"
-    ]
+    ],
+    "Home" => "الرئيسية",
 
 ];
