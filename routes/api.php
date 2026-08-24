@@ -21,6 +21,8 @@ use App\Models\Product;
 use App\Models\User;
 use App\Models\Video;
 use App\Notifications\InvoiceCreated;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -29,6 +31,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Role;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -315,9 +318,10 @@ Route::get('products', function (Request $request) {
 
 Route::get('products/{product}', function (Product $product) {
     // auth()->user();
+    throw new HttpException(500, "error");
     Gate::authorize('view', $product);
     return $product;
-})->middleware('auth:sanctum');
+});
 
 
 Route::post('products/{product}', [ProductController::class, 'update'])->middleware('auth:sanctum');
@@ -380,4 +384,19 @@ Route::post("products", function (Request $request) {
         'user_id' => 1
     ]);
     return ProductResource::collection(Product::all());
+});
+
+
+
+Route::post('users', function () {
+    User::create([
+        'email' => "Af@argf.com",
+        "name" => "Dfa",
+        "password" => "dafa"
+    ]);
+
+    
+
+
+
 });

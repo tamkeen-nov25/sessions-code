@@ -20,14 +20,13 @@ use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 #[ObservedBy([UserObserver::class])]
-
-   
 class User extends Authenticatable  implements JWTSubject
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, HasApiTokens, TestTrait, HasRoles;
     use SoftDeletes;
     use LogTrait;
+
 
      public function getJWTIdentifier()
     {

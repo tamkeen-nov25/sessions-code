@@ -13,7 +13,9 @@ class UserObserver
      */
     public function created(User $user): void
     {
-        Log::info("user name");
+        Log::info("user name",[
+            'name' => $user->name
+        ]);
     }
 
     /**

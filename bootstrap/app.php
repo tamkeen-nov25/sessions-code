@@ -9,9 +9,12 @@ use App\Http\Middleware\WebLocalization;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -57,32 +60,40 @@ return Application::configure(basePath: dirname(__DIR__))
         // ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
+        // betweentwopoints("hello");
+
         // $exceptions->report(function (Throwable $exception) {
 
         //     if ($exception instanceof Exception) {
         //         Log::info($exception->getMessage());
         //     }
         // })->stop();
-        // $exceptions->render(function (Throwable $th,Request $request) {
+        $exceptions->render(function (Throwable $th, Request $request) {
+
+            // dd($th);
+
+            if ($th instanceof NotFoundHttpException) {
+                return response()->json([
+                    'message' => "not found"
+                ], 404);
+            }
+
+            if ($th instanceof HttpException) {
+                return response()->json([
+                    'message' => $th->getMessage()
+                ], 400);
+            }
 
 
-        //     if ($th instanceof BadRequestHttpException) {
-        //         return response()->json([
-        //             'message' => "bad request"
-        //         ], 400);
-        //     }
 
 
-        //     if ($th instanceof HttpExceptionInterface) {
-        //         return successResponse($th->getMessage(), $th->getStatusCode());
-        //     }
+            // if ($th instanceof HttpExceptionInterface) {
+            //     return successResponse($th->getMessage(), $th->getStatusCode());
+            // }
 
 
-        //     // return response()->json([
-        //     //     'message' => "something went wrong"
-        //     // ], 500);
-        // });
+            // return response()->json([
+            //     'message' => "something went wrong"
+            // ], 500);
+        });
     })->create();
-
-
-
