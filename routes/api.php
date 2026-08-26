@@ -389,14 +389,13 @@ Route::post("products", function (Request $request) {
 
 
 Route::post('users', function () {
-    User::create([
-        'email' => "Af@argf.com",
-        "name" => "Dfa",
-        "password" => "dafa"
-    ]);
+    $user = User::find(1);
 
-    
-
+    $user->addMediaFromRequest('profile')
+        ->toMediaCollection('profile');
+    $user->addMediaFromRequest('covers')
+        ->toMediaCollection('covers');
 
 
+    return UserResource::make($user);
 });

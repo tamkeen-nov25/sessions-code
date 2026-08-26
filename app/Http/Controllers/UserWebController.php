@@ -26,6 +26,7 @@ class UserWebController extends Controller
         return view('home');
     }
 
+
     public function loginView()
     {
         return view('login');

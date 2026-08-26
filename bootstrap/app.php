@@ -38,9 +38,9 @@ return Application::configure(basePath: dirname(__DIR__))
             ApiLocalization::class
         ]);
 
-        $middleware->web([
-            WebLocalization::class
-        ]);
+        // $middleware->web([
+        //     WebLocalization::class
+        // ]);
         // $middleware->append([
         //     AgeMiddleware::class
         // ]);

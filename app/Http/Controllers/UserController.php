@@ -84,14 +84,16 @@ class UserController extends Controller
 
     public function edit($user)
     {
+        // return 2; 
         $user = User::find($user);
         return view('users.edit', compact('user'));
     }
 
     public function update(User $user, UpdateUserRequest $request)
     {
-        User::find($user)
+        $user
             ->update($request->all());
+        $user->addMediaFromRequest('profile')->toMediaCollection('profile');
 
         return redirect()->route('users.index');
     }

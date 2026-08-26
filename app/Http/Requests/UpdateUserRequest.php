@@ -15,7 +15,7 @@ class UpdateUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return FacadesGate::allows('update', $this->route('user'));
+        return true;
     }
 
     /**
@@ -26,8 +26,8 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['nullable','string',new Enum(UserTypeEnum::class)],
-            'user_id' => []
+            'name' => ['nullable','string'],
+            // 'user_id' => []
         ];
     }
 }

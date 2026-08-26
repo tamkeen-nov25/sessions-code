@@ -18,7 +18,14 @@ class UserResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'phone' => $this->phone,
-            'profile' =>ProfileResource::make($this->whenLoaded('profile'))
+            'profile_image' => $this->getFirstMediaUrl('profile'),
+            'covers' => $this->getMedia('covers')->map(function ($file) {
+                return [
+                    'id' => $file->id,
+                    'url' => $file->getUrl(),
+                ];
+            }),
+            // 'profile' =>ProfileResource::make($this->whenLoaded('profile'))
             // "active" => $this->active,
             // 'avatar' => asset('storage/' . $this->avatar),
             // 'avatar' => route('api.private',$this->id),

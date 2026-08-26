@@ -1,12 +1,13 @@
 @extends('layouts.app')
-@section('title','Users')
+@section('title', 'Users')
 @section('content')
 
-  <table class="table">
+    <table class="table">
         <thead>
             <tr>
                 <th scope="col">name</th>
                 <th scope="col">email</th>
+                <th scope="col">image</th>
                 <th scope="col">actions</th>
             </tr>
         </thead>
@@ -15,6 +16,14 @@
                 <tr>
                     <td>{{ $user->name }}</td>
                     <td>{{ $user->email }}</td>
+                    {{-- @foreach ($user->getMedia('covers') as $media)
+                        <td>
+                            <img src={{ $media->getUrl() }}>
+                        </td>
+                    @endforeach --}}
+                    <td>
+                        <img src={{ $user->getFirstMediaUrl('profile') }}>
+                    </td>
                     <td>
                         <a href="{{ route('users.edit', $user) }}">edit</a>
                         <form action="{{ route('users.destroy', $user) }}" method="post">
@@ -34,7 +43,7 @@
 
     <a href={{ route('users.create') }}>create</a>
 
-     <x-alert type="danger">
+    <x-alert type="danger">
 
 
         <x-slot name="view">
@@ -42,6 +51,6 @@
         </x-slot>
 
 
-        hello 
+        hello
     </x-alert>
 @endsection

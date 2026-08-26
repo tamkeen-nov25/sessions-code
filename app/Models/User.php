@@ -16,15 +16,17 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 #[ObservedBy([UserObserver::class])]
-class User extends Authenticatable  implements JWTSubject
+class User extends Authenticatable  implements JWTSubject,HasMedia
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, HasApiTokens, TestTrait, HasRoles;
-    use SoftDeletes;
+    use SoftDeletes,InteractsWithMedia;
     use LogTrait;
 
 
