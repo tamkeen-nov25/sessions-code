@@ -19,7 +19,7 @@ Route::get('/', function () {
 })->name("welcome");
 
 Route::get('/users', [UserController::class, 'index'])
-    ->name('users.index');
+    ->name('users.index')->middleware('auth');
 
 Route::get('/users/create', [UserController::class, 'create'])
     ->name('users.create');
@@ -98,6 +98,7 @@ Route::get('send-whatsapp', function () {
 
 
 Route::post('/fcm/register-token', [FcmController::class, 'storeToken'])->middleware('auth');
+Route::get('send', [FcmController::class, 'send']);
 
 
 Route::post('register', [UserWebController::class, 'register'])->name('register');

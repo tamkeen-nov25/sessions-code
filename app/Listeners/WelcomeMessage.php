@@ -3,10 +3,9 @@
 namespace App\Listeners;
 
 use App\Events\UserRegistered;
-use Illuminate\Container\Attributes\Log;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Support\Facades\Log as FacadesLog;
+use Illuminate\Support\Facades\Log;
 
 class WelcomeMessage
 {
@@ -23,6 +22,6 @@ class WelcomeMessage
      */
     public function handle(UserRegistered $event): void
     {
-        FacadesLog::info("welcome message");
+        Log::info("welcome message");
     }
 }

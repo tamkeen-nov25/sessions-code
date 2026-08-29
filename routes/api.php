@@ -11,6 +11,7 @@ use App\Http\Middleware\AgeMiddleware;
 use App\Http\Middleware\TestMiddleware;
 use App\Http\Resources\ProductResource;
 use App\Http\Resources\UserResource;
+use App\Jobs\SendEmail;
 use App\Jobs\Test;
 use App\Mail\WelcomeMailMarkdown;
 use App\Models\Admin;
@@ -227,7 +228,7 @@ Route::get('a/users', function (Request $request) {
 });
 
 
-Route::get('event', function () {
+Route::get('register', function () {
     // User::create();
     // throw new Exception("sdfas");
     // Log::info("afsdf");
@@ -251,14 +252,15 @@ Route::get('event', function () {
     //     'password'=>"ASDf",
     //     'active' =>1
     // ]);
-    // UserRegistered::dispatch();
+    UserRegistered::dispatch($user);
 });
 
 
 Route::get('job', function () {
-    Test::dispatch()->onQueue('high');
-    Test::dispatch()->onQueue('default');
-    Test::dispatch()->onQueue('low');
+    SendEmail::dispatch();
+    // Test::dispatch()->onQueue('high');
+    // Test::dispatch()->onQueue('default');
+    // Test::dispatch()->onQueue('low');
 });
 
 Route::get('mail', function () {
@@ -273,6 +275,8 @@ Route::get('soft', function () {
 Route::get('send', function () {
     $instanceId = 'instance160821';
     $token = 'de1scxp1knylce6f';
+
+    
     $otp = rand(111111, 999999);
     $response =
         Http::post("https://api.ultramsg.com/{$instanceId}/messages/chat", [
@@ -295,7 +299,8 @@ Route::get('notificaiton', function () {
 
     // $user->profile;
 
-    return $user->unreadNotifications->markAsRead();
+     $user->unreadNotifications->markAsRead();
+     return $user->notifications;
 });
 
 Route::get('send', [FcmController::class, 'send']);
@@ -389,7 +394,7 @@ Route::post("products", function (Request $request) {
 
 
 Route::post('users', function () {
-    $user = User::find(1);
+    $user = User::create(1);
 
     $user->addMediaFromRequest('profile')
         ->toMediaCollection('profile');

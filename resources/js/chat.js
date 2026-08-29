@@ -4,6 +4,9 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function initEcho() {
+    console.log('initEcho called');
+    console.log('Echo:', window.Echo);
+
     if (!window.Echo) {
         console.error('Echo not ready');
         return;
@@ -11,6 +14,8 @@ function initEcho() {
 
     window.Echo.channel('chat')
         .listen('.message.sent', (data) => {
+            console.log('MESSAGE RECEIVED:', data);
+
             appendMessage(data.message);
         });
 }
@@ -25,28 +30,37 @@ function initForm() {
         e.preventDefault();
 
         const message = input.value.trim();
+
         if (!message) return;
 
         input.value = '';
 
-        await fetch('/send-message', {
+        const response = await fetch('/send-message', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': document
                     .querySelector('meta[name="csrf-token"]')
-                    .getAttribute('content')
+                    .getAttribute('content'),
+                'Accept': 'application/json',
             },
-            body: JSON.stringify({ message })
+            body: JSON.stringify({ message }),
         });
+
+        const data = await response.json();
+
+        console.log('SEND RESPONSE:', data);
     });
 }
 
 function appendMessage(message) {
     const ul = document.getElementById('messages');
+
     if (!ul) return;
 
     const li = document.createElement('li');
+
     li.textContent = message;
+
     ul.prepend(li);
 }

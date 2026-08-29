@@ -68,32 +68,32 @@ return Application::configure(basePath: dirname(__DIR__))
         //         Log::info($exception->getMessage());
         //     }
         // })->stop();
-        $exceptions->render(function (Throwable $th, Request $request) {
+        // $exceptions->render(function (Throwable $th, Request $request) {
 
-            // dd($th);
+        //     // dd($th);
 
-            if ($th instanceof NotFoundHttpException) {
-                return response()->json([
-                    'message' => "not found"
-                ], 404);
-            }
+        //     if ($th instanceof NotFoundHttpException) {
+        //         return response()->json([
+        //             'message' => "not found"
+        //         ], 404);
+        //     }
 
-            if ($th instanceof HttpException) {
-                return response()->json([
-                    'message' => $th->getMessage()
-                ], 400);
-            }
-
-
+        //     if ($th instanceof HttpException) {
+        //         return response()->json([
+        //             'message' => $th->getMessage()
+        //         ], 400);
+        //     }
 
 
-            // if ($th instanceof HttpExceptionInterface) {
-            //     return successResponse($th->getMessage(), $th->getStatusCode());
-            // }
 
 
-            // return response()->json([
-            //     'message' => "something went wrong"
-            // ], 500);
-        });
+        //     // if ($th instanceof HttpExceptionInterface) {
+        //     //     return successResponse($th->getMessage(), $th->getStatusCode());
+        //     // }
+
+
+        //     // return response()->json([
+        //     //     'message' => "something went wrong"
+        //     // ], 500);
+        // });
     })->create();
